@@ -11,7 +11,13 @@ pipeline{
 				script{
 					withSonarQubeEnv(credentialsId: 'sonar-jenkin-token') {
 					sh 'chmod +x gradlew'
-					sh './gradlew clean build -d sonarqube' 
+					sh './gradlew sonarqube' 
+					}
+					timeout(time: 1, unit: 'HOURS') {
+ 						def qg = waitForQualityGate()
+						if (qg.status != 'OK') {
+							error "Pipeline aborted due to qualitygate failer : $(qg.status)"
+						}
 					}
 				}	
 			}
