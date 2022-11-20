@@ -30,10 +30,10 @@ pipeline{
                                 script{
                                         withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_password')]) {
                                                 sh '''
-                                                        docker build -t 192.168.122.171:8081/springapp:${VERSION} .
-                                                        docker login -u admin -p $docker_password 192.168.122.171:8081
-                                                        docker push 192.168.122.171:8081/springapp:${VERSION}
-                                                        docker rmi 192.168.122.171:8081/springapp:${VERSION}
+                                                        docker build -t 192.168.122.171:8083/springapp:${VERSION} .
+                                                        docker login -u admin -p $docker_password 192.168.122.171:8083
+                                                        docker push 192.168.122.171:8083/springapp:${VERSION}
+                                                        docker rmi 192.168.122.171:8083/springapp:${VERSION}
                                                 '''
                                         }
                                 }
