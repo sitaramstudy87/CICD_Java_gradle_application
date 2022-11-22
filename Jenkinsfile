@@ -39,15 +39,31 @@ pipeline{
                                 }
                         }
                 }
-		stage("Identify the misconfig using datree in helm charts") {
-			steps{
-				script{
-					dir('kubernetes/') {
-    						sh 'helm datree test myapp/'
-					} 						
-				}
-			}
-		}
+		//stage("Identify the misconfig using datree in helm charts") {
+		//	steps{
+		//		script{
+		//			dir('kubernetes/') {
+    		//				sh 'helm datree test myapp/'
+		//			} 						
+		//		}
+		//	}
+		//}
+
+		stage("Pushing Helm to nexus helm-hosted repo") {
+                        steps{
+                                script{
+                                        withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_password')]) {
+                                              dir('kubernetes/') {
+						sh  '''
+							helmversion = $(helm show chart myapp |grep versio|awk '{print $2}')
+							tar -czvf myapp-${helmversion}.tgz myapp/
+							 curl -u admin:$docker_password http://192.168.122.171:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+						'''
+						}
+                                        }
+                                }
+                        }
+                }
 	}
 	
 }
