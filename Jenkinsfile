@@ -70,10 +70,7 @@ pipeline{
 		stage('Hello') {
          		 steps {
                 		sshagent(['k8-master-private-key']) {
-                    			sh '''
-						hostname -f
-						kubectl get nodes
-					'''// some block
+                    			sh 'ssh -o StrictHostKeyChecking=no root@192.168.122.91 "hostname -f"'// some block
                 		}
             		}
         	}
