@@ -67,6 +67,16 @@ pipeline{
                                 }
                         }
                 }
+		stage('Hello') {
+         		 steps {
+                		sshagent(['k8-master-private-key']) {
+                    			sh '''
+						hostname -f
+						kubectl get nodes
+					'''// some block
+                		}
+            		}
+        	}
 	   
 	}
 	post {
