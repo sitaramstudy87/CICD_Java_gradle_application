@@ -7,7 +7,6 @@ pipeline{
 					image 'openjdk:11'
 				}
 			}
-		}
 		steps{
 			script{
 				withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
