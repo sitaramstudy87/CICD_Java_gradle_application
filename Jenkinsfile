@@ -76,7 +76,7 @@ pipeline{
 		//				mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Go to build url and approve the deployment request <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "sitaramstudy87@gmail.com";  
 		//				input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
                   //  			}
-				}
+			//	}
 		//	}
 		//}
 		stage('Deploying application on k8s cluster') {
@@ -96,5 +96,4 @@ pipeline{
 			mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8',  mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "sitaramstudy87@gmail.com";  
 	 	}
 	}
-	
 }
