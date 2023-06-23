@@ -69,13 +69,24 @@ pipeline{
                                 }
                         }
                 }
-		stage('manual approval'){
-			steps{
+		//stage('manual approval'){
+		//	steps{
+		//		script{
+		//			timeout(10) {
+		//				mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Go to build url and approve the deployment request <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "sitaramstudy87@gmail.com";  
+		//				input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
+                  //  			}
+				}
+		//	}
+		//}
+		stage('Deploying application on k8s cluster') {
+			steps {
 				script{
-					timeout(10) {
-						mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Go to build url and approve the deployment request <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "deekshith.snsep@gmail.com";  
-						input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
-                    			}
+		                	//withCredentials([kubeconfigFile(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
+					dir('kubernetes/') {
+						sh 'helm upgrade --install --set image.repository="192.168.10.7:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ ' 
+					}
+					//}
 				}
 			}
 		}
