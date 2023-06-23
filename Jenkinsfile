@@ -54,6 +54,19 @@ pipeline{
 				}
 			}
 		}	
+		stage("pushing the helm charts to nexus"){
+                        steps{
+                                script{
+                                        withCredentials([string(credentialsId: 'jenkins-nexus-dockerrepo', variable: 'docker_password')]) {
+                                                sh '''
+							helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+							tar -czvf  myapp-${helmversion}.tgz myapp/
+							curl -u admin:$docker_password http://192.168.10.7:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                                                '''
+                                        }
+                                }
+                        }
+                }
 	}
 	post {
 		always {
